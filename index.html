@@ -172,6 +172,8 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
 .formfoot { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .status { font-size: 14px; color: var(--muted); }
 .status.ok { color: var(--teal); }
+.formnote { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted); }
+footer a { color: var(--muted); }
 @media (max-width: 860px) { .access .wrap { grid-template-columns: minmax(0, 1fr); gap: 28px; } }
 @media (max-width: 520px) { form { grid-template-columns: minmax(0, 1fr); padding: 18px; } }
 
@@ -179,6 +181,7 @@ footer { padding-block: 40px 56px; border-top: 1px solid var(--rule); }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: center; justify-content: space-between; font-size: 13.5px; color: var(--muted); }
 footer p { margin: 0; max-width: 46em; }
 </style>
+<!-- Cloudflare Web Analytics: added when the site token is available -->
 </head>
 <body>
 
@@ -327,10 +330,12 @@ footer p { margin: 0; max-width: 46em; }
             <option>Equipment supplier or packager</option>
             <option>Lender or investor</option>
             <option>Other</option>
+            <option>Privacy or data request</option>
           </select>
         </div>
         <div class="field full"><label for="f-project">Project (optional)</label><textarea id="f-project" name="project" placeholder="Load, location, when the grid arrives, equipment you are considering"></textarea></div>
         <div class="formfoot"><button class="btn primary" type="submit">Request early access</button><span class="status" id="formStatus" role="status" aria-live="polite"></span></div>
+        <p class="formnote">We use these details only to reply to you and tell you about early access. See our <a href="/privacy.html">privacy notice</a>.</p>
       </form>
     </div>
   </section>
@@ -340,7 +345,7 @@ footer p { margin: 0; max-width: 46em; }
   <div class="wrap">
     <svg viewBox="0 -97.66 909.38 105.73" height="16" width="137.6" role="img" aria-label="NinesForge" style="display:block"><path fill="var(--teal)" d="M9.6 -89.60000000000001H21.12L65.536 -20.224H65.792V-89.60000000000001H77.568V0.0H66.048L21.632 -69.376H21.376V0.0H9.6ZM105.08800000000001 -89.60000000000001H117.376V0.0H105.08800000000001ZM144.89600000000002 -89.60000000000001H156.41600000000003L200.83200000000002 -20.224H201.08800000000002V-89.60000000000001H212.86400000000003V0.0H201.34400000000002L156.92800000000003 -69.376H156.67200000000003V0.0H144.89600000000002ZM239.74400000000003 -89.60000000000001H299.90400000000005V-78.848H252.03200000000004V-50.304H296.192V-39.68H252.03200000000004V-10.752H299.90400000000005V0.0H239.74400000000003ZM321.02400000000006 -12.416V-22.144000000000002H333.184V-16.384L338.68800000000005 -10.752H368.00000000000006L373.63200000000006 -16.512V-34.944L368.00000000000006 -40.448H333.696L321.28000000000003 -52.992000000000004V-77.184L333.696 -89.60000000000001H372.35200000000003L384.76800000000003 -77.184V-67.328H372.73600000000005V-73.21600000000001L367.10400000000004 -78.848H339.07200000000006L333.44000000000005 -73.21600000000001V-56.832L339.07200000000006 -51.2H373.37600000000003L385.79200000000003 -38.784V-12.672L373.12000000000006 0.0H333.44000000000005Z"/><rect fill="var(--ink)" x="424.83" y="-97.66" width="8.0" height="105.73"/><path fill="var(--ink)" d="M473.15200000000004 -89.60000000000001H536.6400000000001V-74.88H490.56000000000006V-50.048H530.4960000000001V-35.328H490.56000000000006V0.0H473.15200000000004ZM553.28 -14.72V-74.88L568.0 -89.60000000000001H614.08L628.8 -74.88V-14.72L614.08 0.0H568.0ZM604.864 -14.848 611.392 -21.376V-68.224L604.864 -74.752H577.216L570.688 -68.224V-21.376L577.216 -14.848ZM722.24 -29.696V0.0H704.832V-25.728L697.1519999999999 -34.304H669.2479999999999V0.0H651.84V-89.60000000000001H708.0319999999999L721.728 -75.776V-48.64L713.024 -39.808ZM669.2479999999999 -48.64H700.096L704.576 -53.120000000000005V-70.528L700.096 -75.008H669.2479999999999ZM744.6399999999999 -14.72V-74.88L759.3599999999999 -89.60000000000001H803.9039999999999L818.3679999999999 -75.136V-61.44H800.9599999999999V-68.736L794.944 -74.752H768.5759999999999L762.0479999999999 -68.224V-21.376L768.5759999999999 -14.848H795.1999999999999L801.4719999999999 -21.12V-35.072H782.2719999999999V-49.92H818.3679999999999V-14.72L803.6479999999999 0.0H759.3599999999999ZM840.1279999999999 -89.60000000000001H904.8959999999998V-74.88H857.5359999999998V-52.224000000000004H901.1839999999999V-37.76H857.5359999999998V-14.72H904.8959999999998V0.0H840.1279999999999Z"/></svg>
     <p>NinesForge produces planning-level estimates. It is not an engineering design or a performance guarantee.</p>
-    <span>© 2026 NinesForge · ninesforge.com</span>
+    <span><a href="/privacy.html">Privacy</a> · © 2026 NinesForge · ninesforge.com</span>
   </div>
 </footer>
 
