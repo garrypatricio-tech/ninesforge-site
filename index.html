@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="NinesForge sizes on-site generator fleets that carry data centers until the grid arrives, checked to 99.999% availability.">
+<meta property="og:title" content="NinesForge">
+<meta property="og:description" content="Size the generator fleet that carries your site until the grid arrives.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ninesforge.com/">
+<meta property="og:image" content="https://ninesforge.com/ninesforge-icon-512.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>NinesForge</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+/* Layout: split hero (claim left, live fleet board right) over a single 1120px column; sections alternate plain ground and a quiet panel band. */
+:root {
+  --ground: #f5f7f8;
+  --panel: #ffffff;
+  --ink: #1c2430;
+  --muted: #566170;
+  --rule: #dce1e6;
+  --teal: #0f766e;
+  --teal-soft: #e1f2ef;
+  --spark: #c2410c;
+  --amber: #b7791f;
+  --board: #10161d;
+  --board-ink: #e6ebf0;
+  --board-muted: #8c97a5;
+  --board-teal: #2dd4bf;
+  --board-rule: #26303b;
+  --display: 'Chakra Petch', 'Arial Narrow', Arial, sans-serif;
+  --body: 'IBM Plex Sans', -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0e1318; --panel: #151c23; --ink: #e6ebf0; --muted: #a2adba; --rule: #27313c;
+    --teal: #2dd4bf; --teal-soft: #11332f; --spark: #fb923c; --amber: #f2b84b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #0e1318; --panel: #151c23; --ink: #e6ebf0; --muted: #a2adba; --rule: #27313c;
+  --teal: #2dd4bf; --teal-soft: #11332f; --spark: #fb923c; --amber: #f2b84b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { background: var(--ground); color: var(--ink); font: 16px/1.6 var(--body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: 24px; }
+a { color: var(--teal); }
+:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+
+/* nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--ground) 88%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--rule); }
+.nav .wrap { display: flex; align-items: center; gap: 24px; padding-block: 14px; }
+.nav nav { display: flex; gap: 22px; margin-left: auto; align-items: center; flex-wrap: wrap; }
+.nav nav a { color: var(--muted); text-decoration: none; font-size: 14.5px; }
+.nav nav a:hover { color: var(--ink); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: 600 15px/1 var(--body); padding: 13px 20px; border-radius: 6px; text-decoration: none; border: 1px solid transparent; cursor: pointer; min-height: 44px; }
+.btn.primary { background: var(--teal); color: var(--ground); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { border-color: var(--rule); color: var(--ink); background: transparent; }
+.btn.ghost:hover { border-color: var(--teal); }
+.nav .btn { padding: 10px 16px; min-height: 40px; font-size: 14px; }
+@media (max-width: 720px) { .nav nav a.navlink { display: none; } }
+
+/* hero */
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; padding-block: 64px 72px; }
+.eyebrow { font: 500 13px/1.4 var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal); }
+h1 { font: 700 clamp(36px, 5vw, 56px)/1.05 var(--display); letter-spacing: 0.005em; margin: 14px 0 18px; text-wrap: balance; }
+.lede { font-size: 18.5px; color: var(--muted); margin: 0 0 28px; max-width: 34em; }
+.ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+.board { background: var(--board); color: var(--board-ink); border-radius: 12px; padding: 20px 20px 16px; border: 1px solid var(--board-rule); min-width: 0; }
+.board-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; font: 500 12.5px/1.4 var(--mono); color: var(--board-muted); letter-spacing: 0.03em; }
+.board-head b { color: var(--board-ink); font-weight: 500; }
+.board canvas { display: block; width: 100%; height: auto; margin: 14px 0 12px; }
+.readout { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; border-top: 1px solid var(--board-rule); padding-top: 12px; }
+.readout div { min-width: 0; }
+.readout b { display: block; font: 600 22px/1.15 var(--display); color: var(--board-ink); font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+.readout b.teal { color: var(--board-teal); }
+.readout span { font: 400 12px/1.35 var(--mono); color: var(--board-muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 12px; font: 400 12px/1.4 var(--mono); color: var(--board-muted); }
+.legend i { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; border-radius: 1px; }
+.board-note { font: 400 11.5px/1.45 var(--mono); color: var(--board-muted); margin-top: 10px; }
+@media (max-width: 900px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 40px 56px; } }
+
+/* facts strip */
+.facts { border-block: 1px solid var(--rule); background: var(--panel); }
+.facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; }
+.fact { padding: 22px 20px; border-left: 1px solid var(--rule); min-width: 0; }
+.fact:first-child { border-left: 0; padding-left: 0; }
+.fact b { display: block; font: 700 30px/1.1 var(--display); color: var(--ink); font-variant-numeric: tabular-nums; }
+.fact span { font-size: 14px; color: var(--muted); }
+@media (max-width: 820px) { .facts .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fact:nth-child(3) { border-left: 0; padding-left: 0; } .fact { border-top: 1px solid var(--rule); } .fact:nth-child(-n+2) { border-top: 0; } }
+
+/* sections */
+section.block { padding-block: 84px; }
+section.band { background: var(--panel); border-block: 1px solid var(--rule); }
+h2 { font: 700 clamp(28px, 3.4vw, 38px)/1.12 var(--display); margin: 10px 0 14px; text-wrap: balance; letter-spacing: 0.005em; }
+.sub { color: var(--muted); font-size: 17px; max-width: 40em; margin: 0 0 36px; }
+.qgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--rule); }
+.q { padding: 26px 28px 28px 0; border-bottom: 1px solid var(--rule); min-width: 0; }
+.q:nth-child(odd) { border-right: 1px solid var(--rule); }
+.q:nth-child(even) { padding-left: 28px; padding-right: 0; }
+.q h3 { font: 600 20px/1.3 var(--display); margin: 0 0 8px; letter-spacing: 0.01em; }
+.q p { margin: 0; color: var(--muted); }
+.q .figure { font: 500 13px/1.5 var(--mono); color: var(--teal); margin-top: 12px; }
+@media (max-width: 760px) { .qgrid { grid-template-columns: minmax(0, 1fr); } .q, .q:nth-child(even) { padding: 22px 0; border-right: 0; } }
+
+/* workflow */
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; counter-reset: s; }
+.steps li { counter-increment: s; padding: 18px 16px 0 0; border-top: 3px solid var(--rule); position: relative; min-width: 0; }
+.steps li:first-child { border-top-color: var(--teal); }
+.steps li::before { content: counter(s); font: 600 13px/1 var(--mono); color: var(--teal); display: block; margin-bottom: 10px; }
+.steps b { display: block; font: 600 17px/1.3 var(--display); margin-bottom: 6px; letter-spacing: 0.01em; }
+.steps span { font-size: 14.5px; color: var(--muted); }
+@media (max-width: 960px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 28px; } }
+@media (max-width: 540px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+
+/* feature rows */
+.features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 36px; }
+.feature { min-width: 0; }
+.feature h3 { font: 600 18px/1.3 var(--display); margin: 0 0 8px; letter-spacing: 0.01em; display: flex; align-items: center; gap: 10px; }
+.feature h3 svg { flex: none; color: var(--teal); }
+.feature p { margin: 0; color: var(--muted); font-size: 15.5px; }
+@media (max-width: 900px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .features { grid-template-columns: minmax(0, 1fr); } }
+
+.gascompare { margin-top: 48px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 32px; align-items: center; padding: 28px; border: 1px solid var(--rule); border-radius: 10px; background: var(--ground); }
+.gascompare h3 { font: 600 20px/1.3 var(--display); margin: 0 0 8px; }
+.gascompare p { margin: 0; color: var(--muted); font-size: 15px; }
+.bars { display: grid; gap: 14px; }
+.bar { display: grid; grid-template-columns: 150px minmax(0, 1fr) 92px; gap: 12px; align-items: center; font-size: 14px; }
+.bar .track { height: 14px; background: var(--rule); border-radius: 2px; overflow: hidden; }
+.bar .fill { height: 100%; border-radius: 2px; }
+.bar .val { font: 500 13.5px/1 var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+.bars .scale { font: 400 12px/1.4 var(--mono); color: var(--muted); }
+@media (max-width: 760px) { .gascompare { grid-template-columns: minmax(0, 1fr); padding: 20px; } .bar { grid-template-columns: 110px minmax(0, 1fr) 80px; } }
+
+/* validation */
+.proof { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.proof div { border-top: 3px solid var(--teal); padding-top: 18px; min-width: 0; }
+.proof b { display: block; font: 700 34px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.proof h3 { font: 600 16px/1.35 var(--body); margin: 8px 0 6px; }
+.proof p { margin: 0; color: var(--muted); font-size: 15px; }
+.fine { margin-top: 28px; font-size: 14px; color: var(--muted); max-width: 52em; }
+@media (max-width: 820px) { .proof { grid-template-columns: minmax(0, 1fr); } }
+
+/* audience */
+.who { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--rule); }
+.who div { padding: 22px 22px 0 0; min-width: 0; }
+.who b { display: block; font: 600 17px/1.3 var(--display); margin-bottom: 6px; }
+.who span { font-size: 15px; color: var(--muted); }
+@media (max-width: 820px) { .who { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 8px; } }
+
+/* access form */
+.access .wrap { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 56px; align-items: start; }
+form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; background: var(--ground); border: 1px solid var(--rule); border-radius: 10px; padding: 26px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+label { font-size: 14px; font-weight: 500; }
+input, select, textarea { font: 15px/1.4 var(--body); color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 11px 12px; width: 100%; min-height: 44px; }
+textarea { min-height: 96px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-soft); }
+.formfoot { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.status { font-size: 14px; color: var(--muted); }
+.status.ok { color: var(--teal); }
+@media (max-width: 860px) { .access .wrap { grid-template-columns: minmax(0, 1fr); gap: 28px; } }
+@media (max-width: 520px) { form { grid-template-columns: minmax(0, 1fr); padding: 18px; } }
+
+footer { padding-block: 40px 56px; border-top: 1px solid var(--rule); }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 32px; align-items: center; justify-content: space-between; font-size: 13.5px; color: var(--muted); }
+footer p { margin: 0; max-width: 46em; }
+</style>
+</head>
+<body>
+
+
+<header class="nav">
+  <div class="wrap">
+    <a href="#top" aria-label="NinesForge home" style="display:flex"><svg viewBox="0 -97.66 909.38 105.73" height="20" width="172.0" role="img" aria-label="NinesForge" style="display:block"><path fill="var(--teal)" d="M9.6 -89.60000000000001H21.12L65.536 -20.224H65.792V-89.60000000000001H77.568V0.0H66.048L21.632 -69.376H21.376V0.0H9.6ZM105.08800000000001 -89.60000000000001H117.376V0.0H105.08800000000001ZM144.89600000000002 -89.60000000000001H156.41600000000003L200.83200000000002 -20.224H201.08800000000002V-89.60000000000001H212.86400000000003V0.0H201.34400000000002L156.92800000000003 -69.376H156.67200000000003V0.0H144.89600000000002ZM239.74400000000003 -89.60000000000001H299.90400000000005V-78.848H252.03200000000004V-50.304H296.192V-39.68H252.03200000000004V-10.752H299.90400000000005V0.0H239.74400000000003ZM321.02400000000006 -12.416V-22.144000000000002H333.184V-16.384L338.68800000000005 -10.752H368.00000000000006L373.63200000000006 -16.512V-34.944L368.00000000000006 -40.448H333.696L321.28000000000003 -52.992000000000004V-77.184L333.696 -89.60000000000001H372.35200000000003L384.76800000000003 -77.184V-67.328H372.73600000000005V-73.21600000000001L367.10400000000004 -78.848H339.07200000000006L333.44000000000005 -73.21600000000001V-56.832L339.07200000000006 -51.2H373.37600000000003L385.79200000000003 -38.784V-12.672L373.12000000000006 0.0H333.44000000000005Z"/><rect fill="var(--ink)" x="424.83" y="-97.66" width="8.0" height="105.73"/><path fill="var(--ink)" d="M473.15200000000004 -89.60000000000001H536.6400000000001V-74.88H490.56000000000006V-50.048H530.4960000000001V-35.328H490.56000000000006V0.0H473.15200000000004ZM553.28 -14.72V-74.88L568.0 -89.60000000000001H614.08L628.8 -74.88V-14.72L614.08 0.0H568.0ZM604.864 -14.848 611.392 -21.376V-68.224L604.864 -74.752H577.216L570.688 -68.224V-21.376L577.216 -14.848ZM722.24 -29.696V0.0H704.832V-25.728L697.1519999999999 -34.304H669.2479999999999V0.0H651.84V-89.60000000000001H708.0319999999999L721.728 -75.776V-48.64L713.024 -39.808ZM669.2479999999999 -48.64H700.096L704.576 -53.120000000000005V-70.528L700.096 -75.008H669.2479999999999ZM744.6399999999999 -14.72V-74.88L759.3599999999999 -89.60000000000001H803.9039999999999L818.3679999999999 -75.136V-61.44H800.9599999999999V-68.736L794.944 -74.752H768.5759999999999L762.0479999999999 -68.224V-21.376L768.5759999999999 -14.848H795.1999999999999L801.4719999999999 -21.12V-35.072H782.2719999999999V-49.92H818.3679999999999V-14.72L803.6479999999999 0.0H759.3599999999999ZM840.1279999999999 -89.60000000000001H904.8959999999998V-74.88H857.5359999999998V-52.224000000000004H901.1839999999999V-37.76H857.5359999999998V-14.72H904.8959999999998V0.0H840.1279999999999Z"/></svg></a>
+    <nav aria-label="Main">
+      <a class="navlink" href="#how">How it works</a>
+      <a class="navlink" href="#validation">Validation</a>
+      <a class="navlink" href="#who">Who it's for</a>
+      <a class="btn primary" href="#access">Request early access</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Bridging power, sized to five nines</div>
+        <h1>Size the generator fleet that carries your site until the grid arrives.</h1>
+        <p class="lede">Data centers now wait three to six years for a utility connection. NinesForge sizes the on-site gas and diesel fleet that runs them in the meantime, from the equipment you can actually buy, for the load steps AI really makes and the gas supply you really have.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#access">Request early access</a>
+          <a class="btn ghost" href="#how">See how it works</a>
+        </div>
+      </div>
+
+      <figure class="board" aria-label="Example fleet: 336 gas generator units sized for a 120 megawatt AI campus at 99.999 percent availability">
+        <div class="board-head"><span><b>120 MW AI campus</b> · 20% load step · 450 kW gas units</span><span id="clock">running</span></div>
+        <canvas id="fleet" width="560" height="300" role="img" aria-label="Grid of 336 generator units: 320 running, 12 outage spares, 4 in planned maintenance"></canvas>
+        <div class="readout">
+          <div><b>336</b><span>units installed</span></div>
+          <div><b class="teal">99.99923%</b><span>site availability</span></div>
+          <div><b>4.05</b><span>min/yr short</span></div>
+        </div>
+        <div class="legend"><span><i style="background:var(--board-teal)"></i>Running (320)</span><span><i style="background:transparent;border:1px solid var(--board-muted)"></i>Outage spare (12)</span><span><i style="background:var(--amber)"></i>Maintenance (4)</span><span><i style="background:var(--spark)"></i>Fault</span></div>
+        <figcaption class="board-note">Example sizing from published datasheet values. When a unit trips, a spare picks up its share.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="facts">
+    <div class="wrap">
+      <div class="fact"><b>3–6 yrs</b><span>typical wait for a grid connection</span></div>
+      <div class="fact"><b>20%/s</b><span>load steps from AI training clusters</span></div>
+      <div class="fact"><b>5.3 min</b><span>shortfall allowed per year at 99.999%</span></div>
+      <div class="fact"><b>43</b><span>generator and storage models, each value linked to its source</span></div>
+    </div>
+  </div>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="eyebrow">What it answers</div>
+      <h2>The questions a bridging fleet has to settle before anyone signs.</h2>
+      <p class="sub">Every answer comes with the reason behind it, so you can defend the number to a customer, a supplier or a lender.</p>
+      <div class="qgrid">
+        <div class="q"><h3>How many units hold five nines?</h3><p>Running units for the load and the step, plus spares for unplanned outages and planned maintenance, calculated exactly over every combination of unit failures.</p><div class="figure">N+16 on 320 running in the example above</div></div>
+        <div class="q"><h3>Can the fleet take the load step?</h3><p>Gas engines accept smaller steps the more load they carry. NinesForge uses published CIMAC and ISO 8528-5 data so the step is checked at the loading the fleet actually runs at.</p><div class="figure">14% per unit needed at 70% load</div></div>
+        <div class="q"><h3>What does one gas line cost you?</h3><p>Gas supply is modelled line by line, with upstream supply, backup fuel and restart time. It is usually the first thing that breaks a five-nines design.</p><div class="figure">One line: 295 min/yr short. Two lines: 3.8.</div></div>
+        <div class="q"><h3>What is the best fleet you can actually buy?</h3><p>Mix up to four equipment types with stock limits, lead times and earlier phases already installed. Choose by capital, capital plus fuel, fuel alone, unit count or installed MW.</p><div class="figure">Capital + fuel over the bridging period</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block band" id="how">
+    <div class="wrap">
+      <div class="eyebrow">How it works</div>
+      <h2>Six steps from site to signed proposal.</h2>
+      <p class="sub">Results update as you type. There is nothing to run until you want the Monte Carlo check.</p>
+      <ol class="steps">
+        <li><b>Site &amp; fuel</b><span>Derate, switchgear, gas lines, backup fuel, prices.</span></li>
+        <li><b>Load &amp; step</b><span>Peak load, load profile, step per second, availability target.</span></li>
+        <li><b>Equipment</b><span>Up to four types from the catalog or supplier quotes, with stock and lead times.</span></li>
+        <li><b>Fleet</b><span>The recommended mix, why it is that size, fuel and efficiency, backup after grid.</span></li>
+        <li><b>Reliability</b><span>Thousands of simulated years to confirm the calculation.</span></li>
+        <li><b>Report</b><span>A customer-ready plan to share as PDF.</span></li>
+      </ol>
+
+      <div class="features" style="margin-top:64px">
+        <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 15l4-5 3 3 6-8"/></svg>Step response at load</h3><p>Choose flat step acceptance or a curve that falls as units carry more load. Every running unit shares the load, so adding units raises the step each can take.</p></div>
+        <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h14M3 14h14"/><circle cx="7" cy="6" r="1.6"/><circle cx="13" cy="14" r="1.6"/></svg>Gas supply that can fail</h3><p>One or two lines, an undersized second line, shared upstream supply, hours of on-site fuel and restart time after an interruption.</p></div>
+        <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="5" height="5"/><rect x="12" y="3" width="5" height="5"/><rect x="3" y="12" width="5" height="5"/><rect x="12" y="12" width="5" height="5"/></svg>Mixed and phased fleets</h3><p>Combine suppliers when no single one can deliver in time. Keep phase one installed and size only what phase two adds, with new capital shown separately.</p></div>
+        <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 17V9M8 17V4M13 17v-6M18 17V7"/></svg>Monte Carlo check</h3><p>Failures, repairs, maintenance, gas interruptions and switchgear faults played hour by hour through the bridging period, with the chance of any event before the grid arrives.</p></div>
+        <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10 3c3 4 5 6 5 9a5 5 0 01-10 0c0-3 2-5 5-9z"/></svg>Fuel and efficiency</h3><p>Part-load heat rates at each load level, gas billed on HHV, diesel by the gallon. Compare suppliers on fuel cost per MWh, not just capital.</p></div>
+        <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 2h7l3 3v13H5z"/><path d="M8 9h5M8 12h5M8 15h3"/></svg>Customer-ready report</h3><p>Requirements, recommended fleet, reliability, bridging economics, the after-grid backup plan and the points to confirm with suppliers.</p></div>
+      </div>
+
+      <div class="gascompare">
+        <div><h3>The same 59-unit fleet, two gas supplies</h3><p>100 MW site, 2.5 MW gas units, 99.999% target. Adding units cannot fix a single gas line; a second independent line can.</p></div>
+        <div class="bars" role="img" aria-label="Minutes per year of shortfall: one gas line 294.5, two independent lines 3.8, allowed at 99.999 percent 5.3">
+          <div class="bar"><span>One gas line</span><div class="track"><div class="fill" style="width:100%;background:var(--spark)"></div></div><span class="val">294.5 min</span></div>
+          <div class="bar"><span>Two independent lines</span><div class="track"><div class="fill" style="width:1.3%;min-width:3px;background:var(--teal)"></div></div><span class="val">3.8 min</span></div>
+          <div class="bar"><span>Allowed at 99.999%</span><div class="track"><div class="fill" style="width:1.8%;min-width:3px;background:var(--muted)"></div></div><span class="val">5.3 min</span></div>
+          <div class="scale">Shortfall per year, same scale</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="validation">
+    <div class="wrap">
+      <div class="eyebrow">Validation</div>
+      <h2>Checked against hand calculations, simulation and published work.</h2>
+      <p class="sub">The availability math, the simulator and the optimiser were tested against each other and against independent sources.</p>
+      <div class="proof">
+        <div><b>3.84 = 3.84</b><h3>Hand calculation</h3><p>Independent binomial and gas-line calculations match NinesForge to the hundredth of a minute per year.</p></div>
+        <div><b>99.981%</b><h3>Published study reproduced</h3><p>At the design point of a published 80 MW data-center study, the simulation lands on the 99.982% Tier III standard that design was built to.</p></div>
+        <div><b>&lt; 1%</b><h3>Real supplier proposal</h3><p>A supplier's 240 MW tender proposal fell within 1% of NinesForge's minimum fleet, and its first phase matched exactly.</p></div>
+      </div>
+      <p class="fine">The full validation report, including the defects found and fixed and the model's known limitations, is available on request. NinesForge produces planning-level results; confirm step response and reliability data with your suppliers before commitment.</p>
+    </div>
+  </section>
+
+  <section class="block band" id="who">
+    <div class="wrap">
+      <div class="eyebrow">Who it's for</div>
+      <h2>Built for the people who size the power and answer for it.</h2>
+      <div class="who">
+        <div><b>Developers</b><span>Decide what to build and when, and what becomes backup once the grid connects.</span></div>
+        <div><b>EPCs and consultants</b><span>Defend a fleet size with the math behind it, in a report the client can read.</span></div>
+        <div><b>Equipment suppliers</b><span>Show where your units fit, how they mix with others, and what your step data is worth.</span></div>
+        <div><b>Owners and lenders</b><span>Check a proposal's redundancy, gas supply and fuel bill before signing.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block access" id="access">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Early access</div>
+        <h2>Size your next bridging fleet with us.</h2>
+        <p class="sub" style="margin-bottom:0">We are working with a small group of developers, EPCs and suppliers on live projects. Tell us about yours.</p>
+      </div>
+      <form id="accessForm" data-endpoint="" novalidate>
+        <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="f-company">Company</label><input id="f-company" name="company" autocomplete="organization" required></div>
+        <div class="field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div class="field"><label for="f-role">Your role</label>
+          <select id="f-role" name="role">
+            <option>Developer or owner</option>
+            <option>EPC or consultant</option>
+            <option>Equipment supplier or packager</option>
+            <option>Lender or investor</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field full"><label for="f-project">Project (optional)</label><textarea id="f-project" name="project" placeholder="Load, location, when the grid arrives, equipment you are considering"></textarea></div>
+        <div class="formfoot"><button class="btn primary" type="submit">Request early access</button><span class="status" id="formStatus" role="status" aria-live="polite"></span></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <svg viewBox="0 -97.66 909.38 105.73" height="16" width="137.6" role="img" aria-label="NinesForge" style="display:block"><path fill="var(--teal)" d="M9.6 -89.60000000000001H21.12L65.536 -20.224H65.792V-89.60000000000001H77.568V0.0H66.048L21.632 -69.376H21.376V0.0H9.6ZM105.08800000000001 -89.60000000000001H117.376V0.0H105.08800000000001ZM144.89600000000002 -89.60000000000001H156.41600000000003L200.83200000000002 -20.224H201.08800000000002V-89.60000000000001H212.86400000000003V0.0H201.34400000000002L156.92800000000003 -69.376H156.67200000000003V0.0H144.89600000000002ZM239.74400000000003 -89.60000000000001H299.90400000000005V-78.848H252.03200000000004V-50.304H296.192V-39.68H252.03200000000004V-10.752H299.90400000000005V0.0H239.74400000000003ZM321.02400000000006 -12.416V-22.144000000000002H333.184V-16.384L338.68800000000005 -10.752H368.00000000000006L373.63200000000006 -16.512V-34.944L368.00000000000006 -40.448H333.696L321.28000000000003 -52.992000000000004V-77.184L333.696 -89.60000000000001H372.35200000000003L384.76800000000003 -77.184V-67.328H372.73600000000005V-73.21600000000001L367.10400000000004 -78.848H339.07200000000006L333.44000000000005 -73.21600000000001V-56.832L339.07200000000006 -51.2H373.37600000000003L385.79200000000003 -38.784V-12.672L373.12000000000006 0.0H333.44000000000005Z"/><rect fill="var(--ink)" x="424.83" y="-97.66" width="8.0" height="105.73"/><path fill="var(--ink)" d="M473.15200000000004 -89.60000000000001H536.6400000000001V-74.88H490.56000000000006V-50.048H530.4960000000001V-35.328H490.56000000000006V0.0H473.15200000000004ZM553.28 -14.72V-74.88L568.0 -89.60000000000001H614.08L628.8 -74.88V-14.72L614.08 0.0H568.0ZM604.864 -14.848 611.392 -21.376V-68.224L604.864 -74.752H577.216L570.688 -68.224V-21.376L577.216 -14.848ZM722.24 -29.696V0.0H704.832V-25.728L697.1519999999999 -34.304H669.2479999999999V0.0H651.84V-89.60000000000001H708.0319999999999L721.728 -75.776V-48.64L713.024 -39.808ZM669.2479999999999 -48.64H700.096L704.576 -53.120000000000005V-70.528L700.096 -75.008H669.2479999999999ZM744.6399999999999 -14.72V-74.88L759.3599999999999 -89.60000000000001H803.9039999999999L818.3679999999999 -75.136V-61.44H800.9599999999999V-68.736L794.944 -74.752H768.5759999999999L762.0479999999999 -68.224V-21.376L768.5759999999999 -14.848H795.1999999999999L801.4719999999999 -21.12V-35.072H782.2719999999999V-49.92H818.3679999999999V-14.72L803.6479999999999 0.0H759.3599999999999ZM840.1279999999999 -89.60000000000001H904.8959999999998V-74.88H857.5359999999998V-52.224000000000004H901.1839999999999V-37.76H857.5359999999998V-14.72H904.8959999999998V0.0H840.1279999999999Z"/></svg>
+    <p>NinesForge produces planning-level estimates. It is not an engineering design or a performance guarantee.</p>
+    <span>© 2026 NinesForge · ninesforge.com</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ---- fleet board: the 120 MW example (320 running, 12 outage spares, 4 in maintenance)
+  var canvas = document.getElementById('fleet');
+  var ctx = canvas.getContext('2d');
+  var RUN = 320, SPARE = 12, MAINT = 4, N = RUN + SPARE + MAINT;
+  var state = [];
+  for (var i = 0; i < N; i++) state.push(i < RUN ? 'run' : i < RUN + SPARE ? 'spare' : 'maint');
+  // scatter maintenance and spares through the grid so it reads as a real fleet
+  var order = state.map(function (_, k) { return k; });
+  var seed = 7;
+  function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+  for (var k = order.length - 1; k > 0; k--) { var j = Math.floor(rnd() * (k + 1)); var t = order[k]; order[k] = order[j]; order[j] = t; }
+  var cells = order.map(function (k) { return state[k]; });
+  var cols = 24, rows = Math.ceil(N / cols);
+  function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+  function draw() {
+    var w = canvas.clientWidth || 560;
+    var dpr = window.devicePixelRatio || 1;
+    var gap = Math.max(2, Math.round(w / 160));
+    var size = (w - gap * (cols - 1)) / cols;
+    var h = rows * size + (rows - 1) * gap;
+    canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    var colors = { run: css('--board-teal'), maint: css('--amber'), fault: css('--spark'), spareLine: css('--board-muted') };
+    cells.forEach(function (s, idx) {
+      var x = (idx % cols) * (size + gap), y = Math.floor(idx / cols) * (size + gap);
+      if (s === 'spare') {
+        ctx.strokeStyle = colors.spareLine; ctx.lineWidth = 1;
+        ctx.strokeRect(x + 0.5, y + 0.5, size - 1, size - 1);
+      } else {
+        ctx.fillStyle = s === 'run' ? colors.run : s === 'maint' ? colors.maint : colors.fault;
+        ctx.globalAlpha = s === 'run' ? 0.92 : 1;
+        ctx.fillRect(x, y, size, size);
+        ctx.globalAlpha = 1;
+      }
+    });
+  }
+  draw();
+  window.addEventListener('resize', draw);
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  if (mq.addEventListener) mq.addEventListener('change', draw);
+
+  // one orchestrated moment: a running unit trips, a spare starts and takes its share, the faulted unit is repaired into the spare pool
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var clock = document.getElementById('clock');
+  if (!reduce) {
+    setInterval(function () {
+      var runs = [], spares = [];
+      cells.forEach(function (s, idx) { if (s === 'run') runs.push(idx); else if (s === 'spare') spares.push(idx); });
+      if (!runs.length || !spares.length) return;
+      var a = runs[Math.floor(Math.random() * runs.length)];
+      var b = spares[Math.floor(Math.random() * spares.length)];
+      cells[a] = 'fault'; draw(); clock.textContent = 'unit fault · spare starting';
+      setTimeout(function () { cells[b] = 'run'; draw(); clock.textContent = 'spare online · load covered'; }, 900);
+      setTimeout(function () { cells[a] = 'spare'; draw(); clock.textContent = 'repaired · back to spare'; }, 3200);
+    }, 4200);
+  }
+
+  // ---- early access form. Set data-endpoint on the form (e.g. a Formspree or Netlify form URL) to collect sign-ups.
+  var form = document.getElementById('accessForm');
+  var status = document.getElementById('formStatus');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    status.className = 'status';
+    var missing = Array.prototype.filter.call(form.querySelectorAll('[required]'), function (el) { return !el.value.trim(); });
+    var email = document.getElementById('f-email');
+    if (missing.length) { status.textContent = 'Add your ' + missing.map(function (el) { return el.previousElementSibling.textContent.toLowerCase(); }).join(', ') + '.'; missing[0].focus(); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.value.trim())) { status.textContent = 'Enter a valid email address.'; email.focus(); return; }
+    var endpoint = form.getAttribute('data-endpoint');
+    if (!endpoint) { status.textContent = 'Sign-up opens soon. This form is not connected yet.'; return; }
+    status.textContent = 'Sending…';
+    fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
+      .then(function (r) {
+        if (!r.ok) throw new Error();
+        form.reset(); status.className = 'status ok'; status.textContent = 'Thanks. We will be in touch about your project.';
+      })
+      .catch(function () { status.textContent = 'That did not go through. Please try again in a moment.'; });
+  });
+})();
+</script>
+
+</body>
+</html>
