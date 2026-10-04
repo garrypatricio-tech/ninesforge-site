@@ -115,22 +115,23 @@ h2 { font: 700 clamp(28px, 3.4vw, 38px)/1.12 var(--display); margin: 10px 0 14px
 @media (max-width: 760px) { .qgrid { grid-template-columns: minmax(0, 1fr); } .q, .q:nth-child(even) { padding: 22px 0; border-right: 0; } }
 
 /* workflow */
-.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0; counter-reset: s; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0; counter-reset: s; }
 .steps li { counter-increment: s; padding: 18px 16px 0 0; border-top: 3px solid var(--rule); position: relative; min-width: 0; }
 .steps li:first-child { border-top-color: var(--teal); }
 .steps li::before { content: counter(s); font: 600 13px/1 var(--mono); color: var(--teal); display: block; margin-bottom: 10px; }
 .steps b { display: block; font: 600 17px/1.3 var(--display); margin-bottom: 6px; letter-spacing: 0.01em; }
 .steps span { font-size: 14.5px; color: var(--muted); }
-@media (max-width: 960px) { .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 28px; } }
+@media (max-width: 1060px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 28px; } }
+@media (max-width: 720px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 540px) { .steps { grid-template-columns: minmax(0, 1fr); } }
 
 /* feature rows */
-.features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 36px; }
+.features { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px 32px; }
 .feature { min-width: 0; }
 .feature h3 { font: 600 18px/1.3 var(--display); margin: 0 0 8px; letter-spacing: 0.01em; display: flex; align-items: center; gap: 10px; }
 .feature h3 svg { flex: none; color: var(--teal); }
 .feature p { margin: 0; color: var(--muted); font-size: 15.5px; }
-@media (max-width: 900px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1000px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .features { grid-template-columns: minmax(0, 1fr); } }
 
 .gascompare { margin-top: 48px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 32px; align-items: center; padding: 28px; border: 1px solid var(--rule); border-radius: 10px; background: var(--ground); }
@@ -251,7 +252,7 @@ footer p { margin: 0; max-width: 46em; }
   <section class="block band" id="how">
     <div class="wrap">
       <div class="eyebrow">How it works</div>
-      <h2>Six steps from site to signed proposal.</h2>
+      <h2>Seven steps from site to signed proposal.</h2>
       <p class="sub">Results update as you type. There is nothing to run until you want the Monte Carlo check.</p>
       <ol class="steps">
         <li><b>Site &amp; fuel</b><span>Derate, switchgear, gas lines, backup fuel, prices.</span></li>
@@ -259,6 +260,7 @@ footer p { margin: 0; max-width: 46em; }
         <li><b>Equipment</b><span>Up to four types from the catalog or supplier quotes, with stock and lead times.</span></li>
         <li><b>Fleet</b><span>The recommended mix, why it is that size, fuel and efficiency, backup after grid.</span></li>
         <li><b>Reliability</b><span>Thousands of simulated years to confirm the calculation.</span></li>
+        <li><b>O&amp;M estimate</b><span>Maintenance, staff and urea costs for every grid-arrival date.</span></li>
         <li><b>Report</b><span>A customer-ready plan to share as PDF.</span></li>
       </ol>
 
@@ -268,7 +270,9 @@ footer p { margin: 0; max-width: 46em; }
         <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="5" height="5"/><rect x="12" y="3" width="5" height="5"/><rect x="3" y="12" width="5" height="5"/><rect x="12" y="12" width="5" height="5"/></svg>Mixed and phased fleets</h3><p>Combine suppliers when no single one can deliver in time. Keep phase one installed and size only what phase two adds, with new capital shown separately.</p></div>
         <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 17V9M8 17V4M13 17v-6M18 17V7"/></svg>Monte Carlo check</h3><p>Failures, repairs, maintenance, gas interruptions and switchgear faults played hour by hour through the bridging period, with the chance of any event before the grid arrives.</p></div>
         <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10 3c3 4 5 6 5 9a5 5 0 01-10 0c0-3 2-5 5-9z"/></svg>Fuel and efficiency</h3><p>Part-load heat rates at each load level, gas billed on HHV, diesel by the gallon. Compare suppliers on fuel cost per MWh, not just capital.</p></div>
-        <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 2h7l3 3v13H5z"/><path d="M8 9h5M8 12h5M8 15h3"/></svg>Customer-ready report</h3><p>Requirements, recommended fleet, reliability, bridging economics, the after-grid backup plan and the points to confirm with suppliers.</p></div>
+        <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10" cy="10" r="3"/><path d="M10 2v3M10 15v3M2 10h3M15 10h3M4.3 4.3l2.1 2.1M13.6 13.6l2.1 2.1M4.3 15.7l2.1-2.1M13.6 6.4l2.1-2.1"/></svg>O&amp;M estimate</h3><p>Maintenance, operating staff and SCR urea from EPA, EIA and BLS data, escalated with the CPI. Low, base and high totals for every possible grid-arrival date, plus the run rate once the units become backup.</p></div>
+        <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 10l4 4 8-9"/><path d="M3 17h14"/></svg>Service quote check</h3><p>Enter a supplier's service-agreement rate per MWh, per kW-year or per run hour. See it on all three bases and whether it falls below, within or above the public-data range.</p></div>
+        <div class="feature"><h3><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 2h7l3 3v13H5z"/><path d="M8 9h5M8 12h5M8 15h3"/></svg>Customer-ready report</h3><p>Requirements, recommended fleet, reliability, fuel and O&amp;M through the bridging period, the after-grid backup plan and the points to confirm with suppliers.</p></div>
       </div>
 
       <div class="gascompare">
@@ -304,8 +308,8 @@ footer p { margin: 0; max-width: 46em; }
       <div class="who">
         <div><b>Developers</b><span>Decide what to build and when, and what becomes backup once the grid connects.</span></div>
         <div><b>EPCs and consultants</b><span>Defend a fleet size with the math behind it, in a report the client can read.</span></div>
-        <div><b>Equipment suppliers</b><span>Show where your units fit, how they mix with others, and what your step data is worth.</span></div>
-        <div><b>Owners and lenders</b><span>Check a proposal's redundancy, gas supply and fuel bill before signing.</span></div>
+        <div><b>Equipment suppliers</b><span>Show where your units fit, how they mix with others, and how your service pricing compares.</span></div>
+        <div><b>Owners and lenders</b><span>Check a proposal's redundancy, gas supply, fuel bill and O&amp;M budget before signing.</span></div>
       </div>
     </div>
   </section>
