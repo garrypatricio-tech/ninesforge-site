@@ -7,8 +7,9 @@
 <meta property="og:title" content="NinesForge">
 <meta property="og:description" content="Size the generator fleet that carries your site until the grid arrives.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://ninesforge.com/">
-<meta property="og:image" content="https://ninesforge.com/ninesforge-icon-512.png">
+<meta property="og:url" content="https://www.ninesforge.com/">
+<meta property="og:image" content="https://www.ninesforge.com/ninesforge-icon-512.png">
+<link rel="canonical" href="https://www.ninesforge.com/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <title>NinesForge</title>
@@ -313,7 +314,9 @@ footer p { margin: 0; max-width: 46em; }
         <h2>Size your next bridging fleet with us.</h2>
         <p class="sub" style="margin-bottom:0">We are working with a small group of developers, EPCs and suppliers on live projects. Tell us about yours.</p>
       </div>
-      <form id="accessForm" data-endpoint="" novalidate>
+      <form id="accessForm" action="https://formspree.io/f/mgavgbdo" method="POST" data-endpoint="https://formspree.io/f/mgavgbdo" novalidate>
+        <input type="hidden" name="_subject" value="NinesForge early access request">
+        <div style="position:absolute;left:-10000px" aria-hidden="true"><label for="f-gotcha">Leave this empty</label><input id="f-gotcha" type="text" name="_gotcha" tabindex="-1" autocomplete="off"></div>
         <div class="field"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" required></div>
         <div class="field"><label for="f-company">Company</label><input id="f-company" name="company" autocomplete="organization" required></div>
         <div class="field"><label for="f-email">Work email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
@@ -417,10 +420,12 @@ footer p { margin: 0; max-width: 46em; }
     status.textContent = 'Sending…';
     fetch(endpoint, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } })
       .then(function (r) {
-        if (!r.ok) throw new Error();
-        form.reset(); status.className = 'status ok'; status.textContent = 'Thanks. We will be in touch about your project.';
+        return r.json().catch(function () { return {}; }).then(function (data) {
+          if (!r.ok) throw new Error(data && data.errors ? data.errors.map(function (x) { return x.message; }).join(' ') : '');
+          form.reset(); status.className = 'status ok'; status.textContent = 'Thanks. We will be in touch about your project.';
+        });
       })
-      .catch(function () { status.textContent = 'That did not go through. Please try again in a moment.'; });
+      .catch(function (err) { status.textContent = (err && err.message) || 'That did not go through. Please try again in a moment.'; });
   });
 })();
 </script>
